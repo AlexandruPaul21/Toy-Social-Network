@@ -17,8 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-//TODO: pending friendships
-//TODO: hash for password
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
