@@ -10,6 +10,7 @@ public class User extends Entity<Long>{
     private final String lastname;
     private final String email;
     private final String password;
+    private final String salt;
 
     /**
      * Basic constructor
@@ -18,11 +19,16 @@ public class User extends Entity<Long>{
      * @param email the email of the user
      * @param password the password of the user
      */
-    public User(String firstname, String lastname, String email, String password) {
+    public User(String firstname, String lastname, String email, String password, String salt) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.salt = salt;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public String getEmail() {
@@ -84,6 +90,7 @@ public class User extends Entity<Long>{
     }
 
     public String writeable() {
-        return getId() + ";" + getFirstname() + ";" + getLastname() + ";" + getEmail() + ";" + getPassword() + "\n";
+        return getId() + ";" + getFirstname() + ";" + getLastname() + ";" + getEmail() + ";" + getPassword() +
+                ";" + getSalt() + "\n";
     }
 }

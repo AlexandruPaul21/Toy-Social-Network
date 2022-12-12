@@ -8,3 +8,4 @@ It was realised during the first semester of the second academic year.
 * PostgreSQL for database
 * JavaFX for the GUI
 * Gradle for build
+* SHA-256 for password hashing

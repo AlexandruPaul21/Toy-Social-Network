@@ -24,7 +24,7 @@ public class DbUserRepository extends MemoryUserRepository {
     public User save(User entity) {
         User user = super.save(entity);
         if (user == null) {
-            String sql = "INSERT INTO users(id,firstname,lastname,email,pass) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO users(id,firstname,lastname,email,pass,salt) VALUES (?,?,?,?,?,?)";
             try (
                     Connection connection = DriverManager.getConnection(urlDb, usernameDb, passwordDb);
                     PreparedStatement preparedStatement = connection.prepareStatement(sql)
@@ -34,6 +34,7 @@ public class DbUserRepository extends MemoryUserRepository {
                 preparedStatement.setString(3, entity.getLastname());
                 preparedStatement.setString(4, entity.getEmail());
                 preparedStatement.setString(5, entity.getPassword());
+                preparedStatement.setString(6, entity.getSalt());
                 preparedStatement.executeUpdate();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
@@ -86,6 +87,25 @@ public class DbUserRepository extends MemoryUserRepository {
         return user;
     }
 
+    public String getSaltWEmail(String email) {
+        String sql = "SELECT salt FROM users WHERE email = ?";
+        String salt = null;
+        try (
+                Connection connection = DriverManager.getConnection(urlDb, usernameDb, passwordDb);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+                ) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                salt = resultSet.getString("salt");
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return salt;
+    }
+
     public User findByEmailPass(String email, String password) {
         try (
                 Connection connection = DriverManager.getConnection(urlDb, usernameDb, passwordDb);
@@ -119,7 +139,8 @@ public class DbUserRepository extends MemoryUserRepository {
                 String lastname = resultSet.getString("lastname");
                 String email = resultSet.getString("email");
                 String pass = resultSet.getString("pass");
-                User user = new User(firstname, lastname, email, pass);
+                String salt = resultSet.getString("salt");
+                User user = new User(firstname, lastname, email, pass, salt);
                 user.setId(id);
                 super.save(user);
             }

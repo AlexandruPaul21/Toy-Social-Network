@@ -33,10 +33,6 @@ public class FriendshipService {
             throw new ArgumentException("At least one id is not valid");
         }
 
-        boolean ok = repository.areFriends(idUser, idNewFriend);
-        if (ok) {
-            throw new ArgumentException("You cannot add a friendship that already exists");
-        }
         Friendship friendship = new Friendship(idUser,idNewFriend);
         friendship.setId(repository.getLowestFreeId());
         repository.save(friendship);

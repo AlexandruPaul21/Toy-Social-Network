@@ -41,7 +41,7 @@ public class FileUserRepository extends MemoryUserRepository {
             List<String> lines = Files.readAllLines(path);
             for (String line : lines) {
                 String[] words = line.split(";");
-                User user = new User(words[1], words[2], words[3], words[4]);
+                User user = new User(words[1], words[2], words[3], words[4], words[5]);
                 user.setId(Long.parseLong(words[0]));
                 super.save(user);
             }

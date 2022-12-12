@@ -169,7 +169,7 @@ public class MainWindow {
             try {
                 friendshipService.removeFriend(loggedUser.getId(), wantUser.getId());
                 friendshipService.removeFriend(wantUser.getId(), loggedUser.getId());
-            } catch(ArgumentException ignore){}
+            } catch(ArgumentException ignored){}
             populateFriends();
         }
     }
