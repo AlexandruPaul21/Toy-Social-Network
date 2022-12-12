@@ -108,7 +108,7 @@ public class MainWindow {
 
     public void populateFriends() {
         modelUser.clear();
-
+        columnFrom.setVisible(true);
         modelUser.setAll(getFriendsDto("accepted"));
 
         buttonTrue.setText("Delete Friend");
@@ -121,7 +121,7 @@ public class MainWindow {
 
     public void populateRequests() {
         modelUser.clear();
-
+        columnFrom.setVisible(true);
         modelUser.setAll(getFriendsDto("sent"));
 
         buttonFalse.setVisible(true);
@@ -135,7 +135,7 @@ public class MainWindow {
 
     public void populateDiscover() {
         modelUser.clear();
-
+        columnFrom.setVisible(false);
         modelUser.setAll(getUsersNotFriends());
 
         searchBar.setVisible(true);
