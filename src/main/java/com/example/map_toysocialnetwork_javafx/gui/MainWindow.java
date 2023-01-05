@@ -4,6 +4,7 @@ import com.example.map_toysocialnetwork_javafx.domain.User;
 import com.example.map_toysocialnetwork_javafx.domain.UserDTO;
 import com.example.map_toysocialnetwork_javafx.domain.validators.ArgumentException;
 import com.example.map_toysocialnetwork_javafx.service.FriendshipService;
+import com.example.map_toysocialnetwork_javafx.service.MessageService;
 import com.example.map_toysocialnetwork_javafx.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -51,6 +53,7 @@ public class MainWindow {
 
     private UserService userService;
     private FriendshipService friendshipService;
+    private MessageService messageService;
     private User loggedUser;
 
     public void setUserService(UserService userService) {
@@ -65,10 +68,11 @@ public class MainWindow {
         this.loggedUser = loggedUser;
     }
 
-    public void setAll(UserService userService, FriendshipService friendshipService, User loggedUser) {
+    public void setAll(UserService userService, FriendshipService friendshipService, MessageService messageService, User loggedUser) {
         setUserService(userService);
         setFriendshipService(friendshipService);
         setLoggedUser(loggedUser);
+        this.messageService = messageService;
         welcomeText.setText("Welcome " + loggedUser.getFirstname());
     }
 
@@ -102,7 +106,7 @@ public class MainWindow {
 
         mainTable.setItems(modelUser);
         buttonTrue.setText("Delete Friend");
-        buttonFalse.setVisible(false);
+        buttonFalse.setText("Open chat");
         disableButtons();
     }
 
@@ -112,7 +116,10 @@ public class MainWindow {
         modelUser.setAll(getFriendsDto("accepted"));
 
         buttonTrue.setText("Delete Friend");
-        buttonFalse.setVisible(false);
+
+        buttonFalse.setVisible(true);
+        buttonFalse.setText("Open chat");
+
         searchBar.setVisible(false);
         if (mainTable.getSelectionModel().isEmpty()) {
             disableButtons();
@@ -174,11 +181,28 @@ public class MainWindow {
         }
     }
 
-    public void onFalseButtonPressed() {
+    public void onFalseButtonPressed() throws IOException {
         if (buttonFalse.getText().equals("Decline")) {
             UserDTO wantUser = modelUser.get(mainTable.getSelectionModel().getFocusedIndex());
             friendshipService.removeFriend(wantUser.getId(), loggedUser.getId());
             populateRequests();
+        } else if (buttonFalse.getText().equals("Open chat")) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/com/example/map_toysocialnetwork_javafx/chat.fxml"));
+            AnchorPane pane = fxmlLoader.load();
+            UserDTO user = mainTable.getSelectionModel().getSelectedItem();
+            Chat chat = fxmlLoader.getController();
+
+            chat.setRepo(messageService, userService);
+            chat.setUsers(loggedUser, userService.findOne(user.getId()));
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(pane));
+
+            stage.setTitle("Conversation with: " + user.getFirstname());
+
+            stage.show();
+
         }
     }
 
@@ -187,7 +211,7 @@ public class MainWindow {
         fxmlLoader.setLocation(getClass().getResource("/com/example/map_toysocialnetwork_javafx/login.fxml"));
         VBox vBox = fxmlLoader.load();
         Login login = fxmlLoader.getController();
-        login.setService(userService, friendshipService);
+        login.setService(userService, friendshipService, messageService);
         login.setInitMsg("Successfully logged out");
 
         Stage stage = new Stage();

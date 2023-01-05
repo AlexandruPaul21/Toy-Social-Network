@@ -3,6 +3,7 @@ package com.example.map_toysocialnetwork_javafx.gui;
 import com.example.map_toysocialnetwork_javafx.domain.validators.ArgumentException;
 import com.example.map_toysocialnetwork_javafx.domain.validators.ValidationException;
 import com.example.map_toysocialnetwork_javafx.service.FriendshipService;
+import com.example.map_toysocialnetwork_javafx.service.MessageService;
 import com.example.map_toysocialnetwork_javafx.service.UserService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class RegisterWindow {
     private UserService userService;
     private FriendshipService friendshipService;
+    private MessageService messageService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -24,6 +26,10 @@ public class RegisterWindow {
 
     public void setFriendshipService(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
+    }
+
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @FXML
@@ -59,7 +65,7 @@ public class RegisterWindow {
             fxmlLoader.setLocation(getClass().getResource("/com/example/map_toysocialnetwork_javafx/login.fxml"));
             VBox root = fxmlLoader.load();
             Login login = fxmlLoader.getController();
-            login.setService(userService, friendshipService);
+            login.setService(userService, friendshipService, messageService);
             login.setInitMsg("User created. Now login");
 
             Stage stage = new Stage();

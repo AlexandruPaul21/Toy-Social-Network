@@ -2,6 +2,7 @@ package com.example.map_toysocialnetwork_javafx.gui;
 
 import com.example.map_toysocialnetwork_javafx.domain.User;
 import com.example.map_toysocialnetwork_javafx.service.FriendshipService;
+import com.example.map_toysocialnetwork_javafx.service.MessageService;
 import com.example.map_toysocialnetwork_javafx.service.UserService;
 
 import javafx.fxml.FXML;
@@ -18,10 +19,12 @@ import java.io.IOException;
 public class Login {
     private FriendshipService friendshipService;
     private UserService userService;
+    private MessageService messageService;
 
-    public void setService(UserService userService1, FriendshipService friendshipService1) {
+    public void setService(UserService userService1, FriendshipService friendshipService1, MessageService messageService1) {
         this.userService = userService1;
         this.friendshipService = friendshipService1;
+        this.messageService = messageService1;
     }
 
     public void setInitMsg(String initMsg) {
@@ -48,7 +51,7 @@ public class Login {
             fxmlLoader.setLocation(getClass().getResource("/com/example/map_toysocialnetwork_javafx/main-window.fxml"));
             AnchorPane root = fxmlLoader.load();
             MainWindow mainWindow = fxmlLoader.getController();
-            mainWindow.setAll(userService, friendshipService, user);
+            mainWindow.setAll(userService, friendshipService, messageService, user);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 800, 600));
@@ -66,6 +69,7 @@ public class Login {
         RegisterWindow registerWindow = fxmlLoader.getController();
         registerWindow.setUserService(userService);
         registerWindow.setFriendshipService(friendshipService);
+        registerWindow.setMessageService(messageService);
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
