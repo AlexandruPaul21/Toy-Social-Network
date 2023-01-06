@@ -64,4 +64,8 @@ public class FriendshipService {
         }
         return ans1.toString();
     }
+
+    public List<Long> getFriendRequestsSent(Long id) {
+        return repository.getFriendRequestsSent(id);
+    }
 }

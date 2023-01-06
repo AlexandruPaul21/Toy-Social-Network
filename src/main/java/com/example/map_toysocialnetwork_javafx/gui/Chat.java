@@ -8,7 +8,7 @@ import com.example.map_toysocialnetwork_javafx.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,9 +34,6 @@ public class Chat {
 
     @FXML
     private TextField messageField;
-
-    @FXML
-    private Button sendButton;
 
     @FXML
     public void initialize() {

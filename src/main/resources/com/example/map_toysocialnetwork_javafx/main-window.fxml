@@ -30,7 +30,8 @@
                         <VBox accessibleRole="MENU" alignment="CENTER" prefHeight="373.0" prefWidth="119.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Button fx:id="friendsButton" mnemonicParsing="false" onAction="#populateFriends" text="Friends" />
-                              <Button fx:id="requestsButton" mnemonicParsing="false" onAction="#populateRequests" text="Requests" />
+                              <Button fx:id="requestsButton" mnemonicParsing="false" onAction="#populateRequests" text="Friend Requests " />
+                              <Button mnemonicParsing="false" onMouseClicked="#populateSentReq" text="Requests sent" />
                               <Button fx:id="discoverButton" mnemonicParsing="false" onAction="#populateDiscover" text="Discover new" />
                               <Button cache="true" mnemonicParsing="false" onMouseClicked="#logOut" text="Log out" />
                            </children>

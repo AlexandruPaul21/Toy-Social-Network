@@ -120,6 +120,28 @@ public class DbFriendshipRepository extends MemoryFriendshipRepository {
         return res;
     }
 
+    public List<Long> getFriendRequestsSent(Long id) {
+        List<Long> reqIds = new ArrayList<>();
+
+        String sql = "SELECT * FROM friendships WHERE id1 = ? AND status = 'sent' ";
+
+        try (
+                Connection connection = DriverManager.getConnection(urlDb, usernameDb, passwordDb);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ) {
+                preparedStatement.setLong(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    reqIds.add(resultSet.getLong("id2"));
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reqIds;
+    }
+
     public List<Long> discoverNew(Long id, long maxSize) {
         List<Long> res = new ArrayList<>(getRequests(id, "accepted"));
         res.addAll(getRequests(id, "sent"));

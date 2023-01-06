@@ -95,6 +95,14 @@ public class MainWindow {
                 .collect(Collectors.toList());
     }
 
+    private List<UserDTO> getFriendRequestsSent() {
+        List<Long> idList = friendshipService.getFriendRequestsSent(loggedUser.getId());
+
+        return idList.stream().map(x -> userService.findOne(x)).toList()
+                .stream()
+                .map(x -> new UserDTO(x.getId(), x.getFirstname(), x.getLastname(), x.getEmail(),
+                        friendshipService.getFriendsFrom(loggedUser.getId(), x.getId()))).collect(Collectors.toList());
+    }
 
 
     @FXML
@@ -172,6 +180,9 @@ public class MainWindow {
         } else if (buttonTrue.getText().equals("Add new friend")) {
             friendshipService.addFriend(loggedUser.getId(), wantUser.getId());
             populateDiscover();
+        } else if (buttonTrue.getText().equals("Delete")) {
+            friendshipService.removeFriend(loggedUser.getId(), wantUser.getId());
+            populateSentReq();
         } else {
             try {
                 friendshipService.removeFriend(loggedUser.getId(), wantUser.getId());
@@ -226,5 +237,18 @@ public class MainWindow {
     private void closeWindow() {
         Stage thisStage = (Stage) mainTable.getScene().getWindow();
         thisStage.close();
+    }
+
+    public void populateSentReq() {
+        modelUser.clear();
+        columnFrom.setVisible(true);
+        modelUser.setAll(getFriendRequestsSent());
+
+        buttonFalse.setVisible(false);
+        searchBar.setVisible(false);
+        buttonTrue.setText("Delete");
+        if (mainTable.getSelectionModel().isEmpty()) {
+            disableButtons();
+        }
     }
 }
