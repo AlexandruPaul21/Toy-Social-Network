@@ -19,7 +19,7 @@ public class MessageService {
 
     public void add(String message, Long idFrom, Long idTo, LocalDateTime dateTime) {
         Message msg = new Message(message, idFrom, idTo, dateTime);
-        msg.setId(repository.getLowestFreeId());
+        msg.setId(repository.getLowestFreeId()+1);
         repository.add(msg);
     }
 }

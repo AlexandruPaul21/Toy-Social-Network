@@ -20,7 +20,7 @@
             <HBox prefHeight="42.0" prefWidth="600.0">
                <children>
                   <TextField fx:id="messageField" prefHeight="27.0" prefWidth="553.0" />
-                  <Button fx:id="sendButton" mnemonicParsing="false" text="Send" />
+                  <Button fx:id="sendButton" onMouseClicked="#sendClicked" mnemonicParsing="false" text="Send" />
                </children>
             </HBox>
          </children>
